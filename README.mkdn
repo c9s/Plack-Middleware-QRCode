@@ -1,0 +1,46 @@
+# NAME
+
+Plack::Middleware::QRCode - Mount QRCode Image service on your Plack application.
+
+# SYNOPSIS
+
+basic configuration:
+
+    use Plack::Middleware::QRCode;
+    builder {
+        mount '/qrcode' => builder {
+            enable 'QRCode';
+            sub {  };
+        };
+    }
+
+provide default options:
+
+    use Plack::Middleware::QRCode;
+    builder {
+        mount '/qrcode' => builder {
+        enable 'QRCode' , 
+            render => {
+                size          => 2,
+                margin        => 2,
+                version       => 1,
+                level         => 'M',
+                casesensitive => 1,
+            };
+        }
+    }
+
+# DESCRIPTION
+
+Plack::Middleware::QRCode is
+
+# AUTHOR
+
+Yo-An Lin <cornelius.howl {at} gmail.com>
+
+# SEE ALSO
+
+# LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
