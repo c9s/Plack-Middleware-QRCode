@@ -34,13 +34,19 @@ sub call {
     my $params = $req->parameters->mixed;
     my %config = %{ $self->config };
 
-    $config{size} = $params->{s};
+    $config{size} = $params->{s} if exists $params->{s};
     $config{margin} = $params->{m};
 
     my $pathinfo = substr $env->{'PATH_INFO'},1;
     say STDERR "Generating QRCode for '" , $pathinfo , "'";
 
-    return [ 500 , [ 'Content-type' => 'text/plain' ] , [ 'Please enter text for QRCode' ] ] unless $pathinfo;
+    my @error = ( 500 , [ 'Content-type' => 'text/plain' ] );
+
+    return [ @error , [ 'Please enter text for QRCode' ] ] unless $pathinfo;
+
+    unless ( $config{size} > 0 ) {
+        return [ @error, [ 'Please enter an integer for size param' ] ];
+    }
 
     my $qrcode = Imager::QRCode->new( %config );
     my $img = $qrcode->plot( $pathinfo );
